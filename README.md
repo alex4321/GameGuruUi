@@ -29,3 +29,4 @@ JavaScript work is next:
 - when LUA code or other block change variable value - 'updateBinding(variableName)' is called
 - to get variable name you should use variables.get(vriableName)
 - to set variable name you should use variables.get(vriableName, value)
+- to close modal layer you show set modalOpened variable to 0 ('variables.set("modalOpened", 0)')
