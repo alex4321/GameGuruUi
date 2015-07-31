@@ -3,7 +3,7 @@ GUI Library for GameGuru (old name is FPS Creator: Reloaded) game engine.
 Basic conceptions:
 - UI presented as "overlay"
 - "overlay" content "blocks"
-- "block" rendered by html file with specific attributes
+- "block" rendered from html file with specific attributes
 - "overlay" can be "non-modal" (can be used for indication, e.g. - HUD) and "modal" (can be used for input)
 
 Library export some functions at Lua:
