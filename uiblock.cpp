@@ -47,6 +47,8 @@ UIBlock::UIBlock(const QString& fileName, Table* variables, QObject*)
     connect(this, SIGNAL(loadFinished(bool)), &loop, SLOT(quit()));
     loop.exec();
     onLoadFinished(true);
+    page()->mainFrame()->setScrollBarPolicy( Qt::Vertical, Qt::ScrollBarAlwaysOff );
+    page()->mainFrame()->setScrollBarPolicy( Qt::Horizontal, Qt::ScrollBarAlwaysOff );
 
     //Used to update window state information while idle
     // e.g. if user switched from game to other window - it'll hide out windows

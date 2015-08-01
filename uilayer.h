@@ -22,6 +22,8 @@ private:
     static uint lastId;
     uint id;
     QString getPath(const QString& name);
+    QString cursorPath;
+    void loadLayerConfig(const QString& configPath, const QString& layerDir);
     void loadBlock(const QString& path);
 public:
     UILayer(const QString& fileName);

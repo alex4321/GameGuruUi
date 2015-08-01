@@ -17,6 +17,9 @@ bool WINAPI DllMain(HINSTANCE, DWORD reason, LPVOID )
         break;
     case DLL_PROCESS_DETACH:
         UILayer::deleteAll();
+        UIThread::get()->execute([]() {
+            QApplication::exit(0);
+        });
         break;
     case DLL_THREAD_ATTACH:
         break;

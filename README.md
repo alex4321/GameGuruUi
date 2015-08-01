@@ -30,3 +30,11 @@ JavaScript work is next:
 - to get variable name you should use variables.get(vriableName)
 - to set variable name you should use variables.get(vriableName, value)
 - to close modal layer you show set modalOpened variable to 0 ('variables.set("modalOpened", 0)')
+
+Layer config
+Must be place in Files/uilayerbank/$layerName/config.ini.
+Now use only one optional parameter Layer.cursor - provides relative path to cursor pointer image.
+E.g. if in uilayerbank/dialog/config.ini we have next code
+[Layer]
+cursor=../common/modal-cursor.png
+it'll find cursor pointer image at uilayerbank/common/modal-cursor.png

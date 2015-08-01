@@ -3,6 +3,9 @@
 #include "uithread.h"
 #include <QDir>
 #include <QFileInfo>
+#include <QPixmap>
+#include <QCursor>
+#include <QSettings>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -28,9 +31,16 @@ UILayer::UILayer(const QString& name) : QObject(NULL)
     this->id = UILayer::lastId;
     UILayer::layers.insert(this->id, this);
 
+    cursorPath = "";
     QDir dir(this->getPath(name));
     if(dir.exists())
     {
+        QString configPath = getPath(name + "/config.ini");
+        if(QFileInfo(configPath).exists())
+        {
+            loadLayerConfig(configPath, dir.absolutePath());
+        }
+
         QStringList filters {"*.html"};
         for(QFileInfo item: dir.entryInfoList(filters))
         {
@@ -39,6 +49,20 @@ UILayer::UILayer(const QString& name) : QObject(NULL)
     }
     QObject::connect(&table, SIGNAL(updated(QString,QObject*)), this, SLOT(bindingUpdated(QString,QObject*)));
     QObject::connect(&table, SIGNAL(filled()), this, SLOT(bindingFilled()));
+}
+
+void UILayer::loadLayerConfig(const QString& configPath, const QString& layerDir)
+{
+    QSettings settings(configPath, QSettings::IniFormat);
+    settings.beginGroup("Layer");
+    QString configuredCursorPath = settings.value("cursor", "").toString();
+    if(configuredCursorPath != "")
+    {
+        if(QFileInfo(layerDir + "/" + configuredCursorPath).exists())
+        {
+            cursorPath = layerDir + "/" + configuredCursorPath;
+        }
+    }
 }
 
 void UILayer::loadBlock(const QString &path)
@@ -101,6 +125,12 @@ void UILayer::showModal()
     UIThread::get()->execute([this]() {
         table.update("modalOpened", QVariant(1), NULL);
         ModalLayerWindow window;
+        if(cursorPath != "")
+        {
+            QPixmap image;
+            image.load(cursorPath);
+            QApplication::setOverrideCursor(QCursor(image));
+        }
         window.show();
         for(UIBlock* block: blocks)
         {
@@ -117,6 +147,7 @@ void UILayer::showModal()
                 break;
             }
         }
+        QApplication::restoreOverrideCursor();
     });
 }
 
