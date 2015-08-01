@@ -14,6 +14,7 @@ Library export some functions at Lua:
 - bool fpscUiHideLayer(int id) - hide layer (can be used only to "non-modal" layers)
 - string|number fpscUiGetVariable(int id, string variableName) - get $variableName variable from layer id
 - void fpscUiSetVariable(int id, string|number value) - set $variableName variable at layer id
+- void fpscUiDestroyLayer(int id) - destroy specified layer
 
 Block html file (e.g. "Files/uilayerbank/main/healthbar.html" for healthbar subblock of main layer) can use next attributes at BODY tag:
 - data-x - set X position in pixels

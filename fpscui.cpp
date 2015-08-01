@@ -173,6 +173,26 @@ extern "C"
         return 1;
     }
 
+    /*
+     * Destroys layer
+     * Can be used, e.g. - for "dailog" modal layers
+     */
+    static int destroyLayer(lua_State* state)
+    {
+        //Check signature
+        const char* signature_error_message = "Signature is : bool hideDialog(int id)";
+        if(!lua_isnumber(state, -1))
+        {
+            lua_pushstring(state, signature_error_message);
+            lua_error(state);
+        }
+
+        uint id = (uint)lua_tonumber(state, -1);
+        UILayer::deleteLayer(id);
+
+        return 1;
+    }
+
 
     /*
      * Get UI layer binded variable
@@ -280,6 +300,7 @@ extern "C"
         lua_register(state, "fpscUiShowLayer", showLayer);
         lua_register(state, "fpscUiShowModalLayer", showModalLayer);
         lua_register(state, "fpscUiHideLayer", hideLayer);
+        lua_register(state, "fpscUiDestroyLayer", destroyLayer);
         lua_register(state, "fpscUiGetVariable", getVariable);
         lua_register(state, "fpscUiSetVariable", setVariable);
         return 1;

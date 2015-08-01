@@ -32,6 +32,7 @@ public:
     Table table;
 
     static UILayer* getLayer(uint id);
+    static void deleteLayer(uint id);
     static void deleteAll();
     void show();
     void showModal();

@@ -51,6 +51,16 @@ UILayer::UILayer(const QString& name) : QObject(NULL)
     QObject::connect(&table, SIGNAL(filled()), this, SLOT(bindingFilled()));
 }
 
+UILayer::~UILayer()
+{
+    UIThread::get()->execute([this]() {
+        for(UIBlock* block : blocks)
+        {
+            delete block;
+        }
+    });
+}
+
 void UILayer::loadLayerConfig(const QString& configPath, const QString& layerDir)
 {
     QSettings settings(configPath, QSettings::IniFormat);
@@ -70,16 +80,6 @@ void UILayer::loadBlock(const QString &path)
     UIThread::get()->execute([this, path]() {
         UIBlock* block = new UIBlock(path, &table);
         blocks.append(block);
-    });
-}
-
-UILayer::~UILayer()
-{
-    UIThread::get()->execute([this]() {
-        for(UIBlock* block : blocks)
-        {
-            delete block;
-        }
     });
 }
 
@@ -147,6 +147,10 @@ void UILayer::showModal()
                 break;
             }
         }
+        for(UIBlock* block: blocks)
+        {
+            block->setParent(NULL);
+        }
         QApplication::restoreOverrideCursor();
     });
 }
@@ -175,7 +179,10 @@ void UILayer::deleteAll()
 {
     for(UILayer* layer: layers)
     {
-        delete layer;
+        if(layer != NULL)
+        {
+            delete layer;
+        }
     }
 }
 
@@ -187,4 +194,14 @@ QVariant UILayer::getVariable(const QString& name)
 void UILayer::setVariable(const QString& name, QVariant value)
 {
     table.update(name, value, NULL);
+}
+
+void UILayer::deleteLayer(uint id)
+{
+    UILayer* layer = UILayer::getLayer(id);
+    if(layer != NULL)
+    {
+        UILayer::layers[id] = NULL;
+        delete layer;
+    }
 }
