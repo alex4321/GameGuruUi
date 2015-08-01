@@ -131,7 +131,7 @@ void UIBlock::updatePosition()
     {
         rect.setTop(windowRect.top() + y);
     }
-    else if(alignY=="right")
+    else if(alignY=="bottom")
     {
         rect.setTop(windowRect.top() + windowRect.height() - rect.height() - y);
     }
