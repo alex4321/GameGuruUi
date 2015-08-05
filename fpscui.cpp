@@ -6,6 +6,14 @@ uint UILayer::lastId = 0;
 QMap<uint, UILayer*> UILayer::layers = QMap<uint, UILayer*>();
 
 
+void unloadObjects()
+{
+    UILayer::deleteAll();
+    UIThread::get()->execute([]() {
+        QApplication::exit(0);
+    });
+}
+
 /*
  * Dll entry point
  */
@@ -16,10 +24,7 @@ bool WINAPI DllMain(HINSTANCE, DWORD reason, LPVOID )
     case DLL_PROCESS_ATTACH:
         break;
     case DLL_PROCESS_DETACH:
-        UILayer::deleteAll();
-        UIThread::get()->execute([]() {
-            QApplication::exit(0);
-        });
+        unloadObjects();
         break;
     case DLL_THREAD_ATTACH:
         break;

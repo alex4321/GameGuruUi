@@ -18,8 +18,6 @@ private slots:
 private:
     QTimer* timer;
     QString path;
-    void updatePosition();
-    void updateSize();
     void updateGeometry();
     void initializeBindings();
     void initializeInfo();
@@ -34,6 +32,8 @@ private:
 public:
     UIBlock(const QString& fileName, Table* variables, QObject* parent = NULL);
     void bindingUpdate(QString key, QObject* by);
+    void updatePosition();
+    void updateSize();
     void bindingFilled();
     void showNonModal();
     void showModal();

@@ -23,16 +23,14 @@ void ModalLayerWindow::paintEvent(QPaintEvent *)
 
 void ModalLayerWindow::updateWindowState()
 {
-#ifdef _WIN32
-    if((WId)GetForegroundWindow() == winId())
+    QString title = Helper::getActiveWindowTitle();
+    if(title.indexOf("fpscuiwindow")>-1 || title.indexOf("Guru-Map Editor")>-1)
     {
         return;
     }
-#endif
     if(Helper::isFpscWindowActive())
     {
         QWidget::show();
-        activate();
     }
     else
     {
@@ -56,5 +54,4 @@ void ModalLayerWindow::activate()
     setWindowFlags( (windowFlags() & ~Qt::Tool) | Qt::Window | Qt::WindowStaysOnTopHint);
     raise();
     activateWindow();
-    //setWindowFlags( (windowFlags() & ~Qt::Window) | Qt::Tool | Qt::WindowStaysOnTopHint);
 }

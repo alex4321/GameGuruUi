@@ -210,10 +210,6 @@ void UIBlock::checkWindowState()
     if(show && activated)
     {
         QWebView::show();
-        if(modalActive)
-        {
-            activateWindow();
-        }
     }
     else if(!show && activated)
     {

@@ -6,6 +6,7 @@
 class Helper
 {
 public:
+    static QString getActiveWindowTitle();
     static bool isFpscWindowActive();
     static QRect gameWindowRect();
 };

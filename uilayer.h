@@ -2,6 +2,7 @@
 #define UILAYER_H
 
 #include <QObject>
+#include <QTimer>
 #include <QMap>
 #include <QVector>
 #include "table.h"
@@ -27,7 +28,6 @@ private:
     void loadBlock(const QString& path);
 public:
     UILayer(const QString& fileName);
-    ~UILayer();
     uint getId();
     Table table;
 

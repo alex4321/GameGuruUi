@@ -7,33 +7,42 @@
 #include <windows.h>
 #endif
 
-bool Helper::isFpscWindowActive()
+QString Helper::getActiveWindowTitle()
 {
 #ifdef _WIN32
     //Get active window title
     HWND active = GetForegroundWindow();
     if(!active)
     {
-        return false;
+        return "";
     }
     int length = GetWindowTextLength(active);
     if(!active)
     {
-        return false;
+        return "";
     }
-    char* c_title = new char[length];
-    GetWindowTextA(active, c_title, length);
+    char* c_title = new char[length+1];
+    int res = GetWindowTextA(active, c_title, length+1);
+    if(res == 0)
+    {
+        delete[] c_title;
+        return "";
+    }
     QString title(c_title);
     delete[] c_title;
-    //TODO: Log title
-    //and check it
+    return title;
+#else
+    #error Not implemented now
+#endif
+}
+
+bool Helper::isFpscWindowActive()
+{
+    QString title = Helper::getActiveWindowTitle();
     return (
             title.indexOf("Game Guru") != -1 ||
             title.indexOf("fpscuiwindow") != -1
             );
-#else
-    #error Not implemented now
-#endif
 }
 
 /*

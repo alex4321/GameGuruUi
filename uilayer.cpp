@@ -51,16 +51,6 @@ UILayer::UILayer(const QString& name) : QObject(NULL)
     QObject::connect(&table, SIGNAL(filled()), this, SLOT(bindingFilled()));
 }
 
-UILayer::~UILayer()
-{
-    UIThread::get()->execute([this]() {
-        for(UIBlock* block : blocks)
-        {
-            delete block;
-        }
-    });
-}
-
 void UILayer::loadLayerConfig(const QString& configPath, const QString& layerDir)
 {
     QSettings settings(configPath, QSettings::IniFormat);
@@ -80,6 +70,7 @@ void UILayer::loadBlock(const QString &path)
     UIThread::get()->execute([this, path]() {
         UIBlock* block = new UIBlock(path, &table);
         blocks.append(block);
+        QObject::connect(block, SIGNAL(escape()), this, SLOT(onEscape()));
     });
 }
 
